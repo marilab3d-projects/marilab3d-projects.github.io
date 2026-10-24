@@ -46,7 +46,9 @@
         function faiPartireMusica() {
             if (!musicaPartita) {
                 const container = document.getElementById('player-musicale');
-                
+                <!-- IL LETTORE AUDIO DEL TUO FILE MP3 -->
+<audio id="mioAudio" src="musica.mp3" preload="auto"></audio>
+
                 
                 // Nasconde la scritta di istruzione
                 document.getElementById('testo-tocco').style.display = 'none';
