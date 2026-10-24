@@ -4,33 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marilab 3D</title>
     <style>
-        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; cursor: pointer; user-select: none; }
+        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; }
         .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; margin-top: 20px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 55vh; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
-        
-        .info-tocco { color: #1DB954; font-size: 16px; font-weight: bold; margin-top: auto; margin-bottom: 50px; animation: lampeggia 1.5s infinite; text-align: center; padding: 0 20px; }
-        @keyframes lampeggia { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+        .player-container { width: 90%; max-width: 500px; margin-top: auto; margin-bottom: 50px; text-align: center; }
+        audio { width: 100%; }
     </style>
 </head>
-<body onclick="faiPartireMusica()">
+<body>
 
-    <!-- CAROSELLO FOTO -->
+    <!-- LE FOTO DEL BIMBO CHE GIRANO DA SOLE -->
     <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- TESTO INFORMATIVO -->
-    <div class="info-tocco" id="testo-tocco">✨ Sfiora lo schermo per far partire la musica ✨</div>
-
-    <!-- LETTORE AUDIO MP3 -->
-    <audio id="mioAudio" src="musica.mp3" preload="auto"></audio>
+    <!-- IL LETTORE AUDIO DEL TUO FILE MP3 INTERNO -->
+    <div class="player-container">
+        <audio controls preload="auto">
+            <source src="musica.mp3" type="audio/mpeg">
+            Il tuo browser non supporta questo file audio.
+        </audio>
+    </div>
 
     <script>
-        // Movimento automatico delle foto
         const slider = document.getElementById('slider');
         let index = 0;
         setInterval(() => {
@@ -39,19 +39,6 @@
                 slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
             }
         }, 3000);
-
-        // Avvio dell'MP3 al primo tocco sullo schermo
-        let musicaPartita = false;
-        function faiPartireMusica() {
-            const audio = document.getElementById('mioAudio');
-            if (!musicaPartita && audio) {
-                audio.play().catch(function(error) {
-                    console.log("Blocco browser superato");
-                });
-                document.getElementById('testo-tocco').style.display = 'none';
-                musicaPartita = true;
-            }
-        }
     </script>
 
 </body>
