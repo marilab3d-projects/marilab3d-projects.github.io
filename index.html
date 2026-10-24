@@ -5,33 +5,35 @@
     <title>Marilab 3D</title>
     <style>
         body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; }
-        
-        /* STRUTTURA DEL CAROSELLO */
         .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; margin-top: 20px; }
         .carosello::-webkit-scrollbar { display: none; }
-        
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 55vh; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
-        
-        /* SPAZIO MUSICA IN FONDO */
         .player { width: 100%; max-width: 500px; padding: 15px; box-sizing: border-box; margin-top: auto; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <!-- QUI CI SONO LE RIGHE DELLE FOTO DEL BIMBO -->
-    <div class="carosello">
+    <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
-        <!-- Se vuoi metterne altre, aggiungi una riga identica qua sotto con il nuovo nome della foto -->
     </div>
 
-    <!-- PLAYER DI SPOTIFY SANO E CORRETTO -->
     <div class="player">
-        ><iframe width="100%" height="315" src="https://youtube.com" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe
-
+        <iframe width="100%" height="200" src="https://youtube.com" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        let index = 0;
+        setInterval(() => {
+            if(slider) {
+                index = (index + 1) % slider.children.length;
+                slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
+            }
+        }, 3000);
+    </script>
 
 </body>
 </html>
