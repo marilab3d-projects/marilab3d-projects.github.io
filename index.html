@@ -4,17 +4,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marilab 3D</title>
     <style>
-        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; }
+        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; cursor: pointer; user-select: none; }
         .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; margin-top: 20px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 55vh; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
         
-        /* IL PULSANTE DELLA MUSICA */
-        .btn-musica { display: inline-block; background-color: #ff0000; color: white; padding: 15px 30px; font-weight: bold; text-decoration: none; border-radius: 30px; margin-top: auto; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(255,0,0,0.4); font-size: 16px; }
+        /* Scritta di istruzione per il cliente */
+        .info-tocco { color: #1DB954; font-size: 15px; font-weight: bold; margin-top: auto; margin-bottom: 40px; animation: lampeggia 1.5s infinite; }
+        @keyframes lampeggia { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
     </style>
 </head>
-<body>
+<body onclick="faiPartireMusica()">
 
     <!-- LE FOTO CHE GIRANO DA SOLE -->
     <div class="carosello" id="slider">
@@ -23,10 +24,14 @@
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL PULSANTE PULITO SENZA BLOCCHI -->
-    <a href="https://youtube.com" class="btn-musica">🎵 Ascolta la Colonna Sonora</a>
+    <!-- Invito a toccare lo schermo -->
+    <div class="info-tocco" id="testo-tocco">✨ Sfiora lo schermo per attivare la musica ✨</div>
+
+    <!-- LETTORE INVISIBILE CON IL LINK DI ACHILLE LAURO E GEOLIER -->
+    <div id="player-musicale" style="display:none;"></div>
 
     <script>
+        // Gestione del Carosello Automatico delle immagini
         const slider = document.getElementById('slider');
         let index = 0;
         setInterval(() => {
@@ -35,6 +40,20 @@
                 slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
             }
         }, 3000);
+
+        // Avvio della musica al primo tocco sullo schermo
+        let musicaPartita = false;
+        function faiPartireMusica() {
+            if (!musicaPartita) {
+                const container = document.getElementById('player-musicale');
+                // Carica il video ufficiale di "PER NOI" con autoplay forzato
+                container.innerHTML = '<iframe width="1" height="1" src="https://youtube.com" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                
+                // Nasconde la scritta di istruzione
+                document.getElementById('testo-tocco').style.display = 'none';
+                musicaPartita = true;
+            }
+        }
     </script>
 
 </body>
