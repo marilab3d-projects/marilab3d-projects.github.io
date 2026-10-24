@@ -10,25 +10,24 @@
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 55vh; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
         
-        /* Scritta di istruzione per il cliente */
-        .info-tocco { color: #1DB954; font-size: 15px; font-weight: bold; margin-top: auto; margin-bottom: 40px; animation: lampeggia 1.5s infinite; }
+        .info-tocco { color: #1DB954; font-size: 16px; font-weight: bold; margin-top: auto; margin-bottom: 50px; animation: lampeggia 1.5s infinite; text-align: center; padding: 0 20px; }
         @keyframes lampeggia { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
     </style>
 </head>
 <body onclick="faiPartireMusica()">
 
-    <!-- LE FOTO CHE GIRANO DA SOLE -->
+    <!-- LE FOTO DEL BIMBO CHE GIRANO DA SOLE -->
     <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- Invito a toccare lo schermo -->
-    <div class="info-tocco" id="testo-tocco">✨ Sfiora lo schermo per attivare la musica ✨</div>
+    <!-- SCRITTA D'INVITO PER IL CLIENTE -->
+    <div class="info-tocco" id="testo-tocco">✨ Sfiora lo schermo per far partire la musica ✨</div>
 
-    <!-- LETTORE INVISIBILE CON IL LINK DI ACHILLE LAURO E GEOLIER -->
-    <div id="player-musicale" style="display:none;"></div>
+    <!-- IL LETTORE AUDIO DEL TUO FILE MP3 -->
+    <audio id="mioAudio" src="musica.mp3" preload="auto"></audio>
 
     <script>
         // Gestione del Carosello Automatico delle immagini
@@ -44,13 +43,11 @@
         // Avvio della musica al primo tocco sullo schermo
         let musicaPartita = false;
         function faiPartireMusica() {
-            if (!musicaPartita) {
-                const container = document.getElementById('player-musicale');
-                <!-- IL LETTORE AUDIO DEL TUO FILE MP3 -->
-<audio id="mioAudio" src="musica.mp3" preload="auto"></audio>
-
-                
-                // Nasconde la scritta di istruzione
+            const audio = document.getElementById('mioAudio');
+            if (!musicaPartita && audio) {
+                audio.play().catch(function(error) {
+                    console.log("Blocco sicurezza superato");
+                });
                 document.getElementById('testo-tocco').style.display = 'none';
                 musicaPartita = true;
             }
