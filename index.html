@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marilab 3D - Prova Love NFC</title>
+    <title>Marilab 3D - Luxury Love</title>
     <style>
         /* SFONDO SCURO TEMA LOVE */
         body { 
@@ -48,14 +48,16 @@
 </head>
 <body>
 
-    <!-- LE FOTO DEL TUO BAMBINO -->
+    <!-- CAROSELLO VUOTO SAGOMA: LEGGE IN AUTOMATICO LE FOTO CHE CARICHERAI NEL MAGAZZINO -->
     <div class="carosello" id="slider">
-        <div class="slide"><img src="20250812_095704.jpg"></div>
-        <div class="slide"><img src="20250823_185408.jpg"></div>
-        <div class="slide"><img src="20250915_081300.jpg"></div>
+        <div class="slide"><img src="foto1.jpg" onerror="this.parentElement.style.display='none'"></div>
+        <div class="slide"><img src="foto2.jpg" onerror="this.parentElement.style.display='none'"></div>
+        <div class="slide"><img src="foto3.jpg" onerror="this.parentElement.style.display='none'"></div>
+        <div class="slide"><img src="foto4.jpg" onerror="this.parentElement.style.display='none'"></div>
+        <div class="slide"><img src="foto5.jpg" onerror="this.parentElement.style.display='none'"></div>
     </div>
 
-    <!-- IL VINILE CON IL TASTO PLAY -->
+    <!-- IL VINILE INTERATTIVO CON IL TASTO PLAY -->
     <div class="player-container">
         <div class="vinile" id="discoVinile" onclick="controllaMusica()">
             <div class="etichetta" id="tastoIcona">▶</div>
@@ -63,19 +65,22 @@
         <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER FARE PLAY</div>
     </div>
 
-    <!-- AUDIO MP3 COLLEGATO ALLA TUA MUSICA -->
+    <!-- LETTORE DIETRO LE QUINTE: ABILITA LA MUSICA.MP3 DEL CLIENTE -->
     <audio id="mioAudio" preload="auto" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Gestione Carosello Foto ogni 5 secondi
+        // Gestione Carosello Foto Intelligente (salta i file mancanti)
         const slider = document.getElementById('slider');
         let index = 0;
         setInterval(() => {
             if(slider) {
-                index = (index + 1) % slider.children.length;
-                slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
+                const visibili = Array.from(slider.children).filter(c => c.style.display !== 'none');
+                if(visibili.length > 0) {
+                    index = (index + 1) % visibili.length;
+                    slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
+                }
             }
         }, 5000);
 
@@ -91,6 +96,8 @@
                     icona.innerText = "❚❚"; icona.style.paddingLeft = "0px"; icona.style.fontSize = "16px";
                     icona.style.backgroundColor = "#ff0055";
                     testo.innerText = "💿 IN RIPRODUZIONE...";
+                }).catch((err) => {
+                    console.log("Audio non pronto:", err);
                 });
             } else {
                 audio.pause();
