@@ -31,15 +31,20 @@
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow: hidden; position: relative; 
         }
         
-        /* EFFETTO STELLE ARGENTATE BRILLANTI */
+        /* EFFETTO STELLE ARGENTATE PIÙ VISIBILI E CON OMBRA */
         .stella-argento { 
-            position: absolute; color: #a6b8c7; pointer-events: none; animation: luccica linear infinite; z-index: 0; opacity: 0;
-            filter: drop-shadow(0 0 3px rgba(255,255,255,0.6));
+            position: absolute; 
+            color: #78909c; /* Argento satinato più scuro e visibile */
+            pointer-events: none; 
+            animation: luccica linear infinite; 
+            z-index: 0; 
+            opacity: 0;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
         }
         @keyframes luccica {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: scale(1); opacity: 0; }
+            0% { transform: scale(0.4) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: scale(1.1) rotate(45deg); opacity: 0; }
         }
 
         /* ELEMENTI DECORATIVI FISSI SOLO IN ALTO */
@@ -64,7 +69,7 @@
             display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 30px; z-index: 1; width: 90%; max-width: 400px;
         }
         .blocco-dato {
-            background-color: rgba(255, 255, 255, 0.7); padding: 8px 12px; border-radius: 12px; text-align: center; flex: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.6);
+            background-color: rgba(255, 255, 255, 0.75); padding: 8px 12px; border-radius: 12px; text-align: center; flex: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid rgba(255,255,255,0.6);
         }
         .titolo-dato { font-size: 10px; text-transform: uppercase; color: var(--colore-dedica); font-weight: bold; letter-spacing: 0.5px; margin-bottom: 3px; }
         .valore-dato { font-size: 14px; font-weight: bold; color: var(--colore-dati); }
@@ -123,7 +128,7 @@
             }
         }, 5000);
 
-        // Generatore automatico di Stelline d'Argento brillanti
+        // Generatore automatico di Stelline d'Argento più visibili
         setInterval(() => {
             const stella = document.createElement('div');
             stella.className = 'stella-argento';
@@ -132,12 +137,12 @@
             
             stella.style.left = Math.random() * 100 + 'vw';
             stella.style.top = Math.random() * 100 + 'vh';
-            stella.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            stella.style.fontSize = (Math.random() * 6 + 10) + 'px';
+            stella.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            stella.style.fontSize = (Math.random() * 6 + 14) + 'px'; // Leggermente più grandi
             
             document.body.appendChild(stella);
-            setTimeout(() => { stella.remove(); }, 4000);
-        }, 300);
+            setTimeout(() => { stella.remove(); }, 5000);
+        }, 250); // Più frequenti
     </script>
 </body>
 </html>
