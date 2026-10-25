@@ -2,35 +2,74 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marilab 3D</title>
+    <title>Marilab 3D - Vinile</title>
     <style>
-        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; }
+        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow-x: hidden; }
+        
         .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; margin-top: 20px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
-        .slide img { max-width: 95%; max-height: 55vh; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); object-fit: contain; }
-        .player-container { width: 90%; max-width: 500px; margin-top: auto; margin-bottom: 50px; text-align: center; }
-        audio { width: 100%; }
+        .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); object-fit: contain; }
+
+        /* IL DESIGN DEL VINILE DIGITAL */
+        .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
+        
+        .vinile { 
+            width: 140px; height: 140px; 
+            background: radial-gradient(circle, #2c2c2c 2px, #000 4px, #111 20%, #000 40%, #111 60%, #000 80%, #111 100%);
+            border-radius: 50%; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative;
+            border: 2px solid #222;
+        }
+
+        /* L'ETICHETTA AL CENTRO DEL DISCO */
+        .etichetta {
+            width: 50px; height: 50px;
+            background-color: #ff0055; /* Colore personalizzabile */
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 8px; font-weight: bold; text-align: center;
+            border: 2px solid #000;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            user-select: none;
+        }
+        
+        /* IL FORO CENTRALE */
+        .etichetta::after {
+            content: ''; position: absolute; width: 8px; height: 8px; background-color: #121212; border-radius: 50%;
+        }
+
+        /* ANIMAZIONE DEL DISCO CHE GIRA */
+        .in-rotazione { animation: giraVinile 3s linear infinite; }
+        @keyframes giraVinile { 100% { transform: rotate(360deg); } }
+
+        .istruzione { color: #888; font-size: 12px; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <!-- LE FOTO DEL BIMBO CHE GIRANO DA SOLE -->
+    <!-- CAROSELLO FOTO AUTOMATICO (5 SECONDI) -->
     <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL LETTORE AUDIO DEL TUO FILE MP3 INTERNO -->
+    <!-- IL VINILE INTERATTIVO -->
     <div class="player-container">
-        <audio controls preload="auto">
-            <source src="musica.mp3" type="audio/mpeg">
-            Il tuo browser non supporta questo file audio.
-        </audio>
+        <div class="vinile" id="discoVinile" onclick="controllaMusica()">
+            <div class="etichetta" id="coloreEtichetta">MARILAB</div>
+        </div>
+        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO</div>
     </div>
 
+    <!-- IL LETTORE MP3 INVISIBILE DIETRO AL VINILE -->
+    <audio id="mioAudio" src="musica.mp3" preload="auto" loop></audio>
+
     <script>
+        // Gestione Carosello
         const slider = document.getElementById('slider');
         let index = 0;
         setInterval(() => {
@@ -39,6 +78,26 @@
                 slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
             }
         }, 5000);
+
+        // Controllo del Vinile e dell'Audio
+        function controllaMusica() {
+            const audio = document.getElementById('mioAudio');
+            const disco = document.getElementById('discoVinile');
+            const testo = document.getElementById('testoStato');
+            const etichetta = document.getElementById('coloreEtichetta');
+
+            if (audio.paused) {
+                audio.play();
+                disco.classList.add('in-rotazione');
+                testo.innerText = "💿 IN RIPRODUZIONE...";
+                etichetta.style.backgroundColor = "#1DB954"; // Cambia in verde quando suona
+            } else {
+                audio.pause();
+                disco.classList.remove('in-rotazione');
+                testo.innerText = "🎵 DISCO IN PAUSA";
+                etichetta.style.backgroundColor = "#ff0055"; // Torna rosso in pausa
+            }
+        }
     </script>
 
 </body>
