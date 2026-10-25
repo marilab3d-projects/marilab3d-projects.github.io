@@ -11,7 +11,7 @@
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); object-fit: contain; }
 
-        /* IL DESIGN DEL VINILE DIGITAL */
+        /* IL DESIGN DEL VINILE */
         .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
         
         .vinile { 
@@ -22,12 +22,13 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; position: relative;
             border: 2px solid #222;
+            transition: transform 0.5s ease;
         }
 
         /* L'ETICHETTA AL CENTRO DEL DISCO */
         .etichetta {
             width: 50px; height: 50px;
-            background-color: #ff0055; /* Colore personalizzabile */
+            background-color: #ff0055;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 8px; font-weight: bold; text-align: center;
@@ -38,12 +39,11 @@
         
         /* IL FORO CENTRALE */
         .etichetta::after {
-            content: ''; position: absolute; width: 8px; height: 8px; background-color: #121212; border-radius: 50%;
-        }
+            content: ''; position: absolute; width: 8px; height: 8px; background-color: #121212; border-radius: 50%; }
 
-        /* ANIMAZIONE DEL DISCO CHE GIRA */
+        /* ANIMAZIONE DI ROTAZIONE FLUIDA */
         .in-rotazione { animation: giraVinile 3s linear infinite; }
-        @keyframes giraVinile { 100% { transform: rotate(360deg); } }
+        @keyframes giraVinile { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .istruzione { color: #888; font-size: 12px; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
     </style>
@@ -62,40 +62,47 @@
         <div class="vinile" id="discoVinile" onclick="controllaMusica()">
             <div class="etichetta" id="coloreEtichetta">MARILAB</div>
         </div>
-        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO</div>
+        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER FARE PLAY</div>
     </div>
 
-    <!-- IL LETTORE MP3 INVISIBILE DIETRO AL VINILE -->
-    <audio id="mioAudio" src="musica.mp3" preload="auto" loop></audio>
+    <!-- LETTORE MP3 STANDARD MA NASCOSTO -->
+    <audio id="mioAudio" preload="auto" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // Gestione Carosello
+        // Gestione Carosello Foto
         const slider = document.getElementById('slider');
         let index = 0;
-        setInterval(() => {
-            if(slider) {
+        if(slider && slider.children.length > 0) {
+            setInterval(() => {
                 index = (index + 1) % slider.children.length;
                 slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
-            }
-        }, 5000);
+            }, 5000);
+        }
 
-        // Controllo del Vinile e dell'Audio
+        // Funzione super blindata per attivare e fermare il Vinile e l'Audio
         function controllaMusica() {
             const audio = document.getElementById('mioAudio');
             const disco = document.getElementById('discoVinile');
             const testo = document.getElementById('testoStato');
             const etichetta = document.getElementById('coloreEtichetta');
 
+            if (!audio || !disco || !testo || !etichetta) return;
+
             if (audio.paused) {
-                audio.play();
-                disco.classList.add('in-rotazione');
-                testo.innerText = "💿 IN RIPRODUZIONE...";
-                etichetta.style.backgroundColor = "#1DB954"; // Cambia in verde quando suona
+                audio.play().then(() => {
+                    disco.classList.add('in-rotazione');
+                    testo.innerText = "💿 IN RIPRODUZIONE...";
+                    etichetta.style.backgroundColor = "#1DB954"; // Diventa Verde Spotify
+                }).catch((err) => {
+                    console.log("Errore riproduzione:", err);
+                });
             } else {
                 audio.pause();
                 disco.classList.remove('in-rotazione');
                 testo.innerText = "🎵 DISCO IN PAUSA";
-                etichetta.style.backgroundColor = "#ff0055"; // Torna rosso in pausa
+                etichetta.style.backgroundColor = "#ff0055"; // Torna Rosso/Rosa
             }
         }
     </script>
