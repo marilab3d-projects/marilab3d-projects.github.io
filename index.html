@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marilab 3D - Nascita Elegance Dati</title>
+    <title>Marilab 3D - Nascita Elegance Premium</title>
     
     <!-- ========================================== -->
     <!-- ✍️ ZONA PERSONALIZZAZIONE (MODIFICA SOLO QUI!) -->
@@ -11,10 +11,10 @@
         :root {
             --scritta-dedica: "Benvenuta Piccola Principessa!"; 
             
-            /* 📝 INSERISCI QUI I DATI DELLA NASCITA */
-            --data-nascita: "25 Ottobre 2026";   /* Cambia la data */
-            --peso-nascita: "3.250 kg";          /* Cambia il peso */
-            --altezza-nascita: "50 cm";          /* Cambia l'altezza */
+            /* 📝 DATI DELLA NASCITA DI PROVA */
+            --data-nascita: "25 Ottobre 2026";   
+            --peso-nascita: "3.250 kg";          
+            --altezza-nascita: "50 cm";          
 
             --colore-sfondo: #fce4ec;         /* Delicato Rosa Pastello */
             --colore-dedica: #c2185b;         /* Testo Rosa Scuro */
@@ -31,27 +31,26 @@
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow: hidden; position: relative; 
         }
         
-        /* ELEMENTI DECORATIVI FISSI */
+        /* ELEMENTI DECORATIVI FISSI SOLO IN ALTO */
         .decorazione-fissa { position: absolute; font-size: 32px; z-index: 0; user-select: none; pointer-events: none; opacity: 0.85; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08)); }
         .top-left  { top: 15px; left: 15px; }
         .top-right { top: 15px; right: 15px; }
         .fiocco-l  { top: 75px; left: 25px; font-size: 28px; }
         .fiocco-r  { top: 75px; right: 25px; font-size: 28px; }
-        .bot-left  { bottom: 40px; left: 30px; }
-        .bot-right { bottom: 40px; right: 30px; }
 
         .dedica-personale {
             font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; color: var(--colore-dedica); font-size: 22px; text-align: center; margin-top: 30px; margin-bottom: 5px; z-index: 1; text-shadow: 0 1px 2px rgba(255,255,255,0.7); max-width: 75%;
         }
         
-        .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; z-index: 1; margin-top: 35px; }
+        /* FOTO PIÙ IN BASSO E CENTRATA: Aumentato il margine superiore a 60px */
+        .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; z-index: 1; margin-top: 60px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 90%; max-height: 46vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); object-fit: contain; border: 4px solid #fff; }
 
-        /* BLOCCO DATI SOTTO LA FOTO */
+        /* BLOCCO DATI SOTTO LA FOTO SPAZIATO */
         .contenitore-dati {
-            display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 25px; z-index: 1; width: 90%; max-width: 400px;
+            display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 30px; z-index: 1; width: 90%; max-width: 400px;
         }
         .blocco-dato {
             background-color: rgba(255, 255, 255, 0.6); padding: 8px 12px; border-radius: 12px; text-align: center; flex: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.5);
@@ -62,13 +61,11 @@
 </head>
 <body>
 
-    <!-- ORSACCHIOTTI E FIOCCHETTI FISSI -->
+    <!-- DECORAZIONI SOLO IN ALTO -->
     <div class="decorazione-fissa top-left">🧸</div>
     <div class="decorazione-fissa top-right">🧸</div>
     <div class="decorazione-fissa fiocco-l">🎀</div>
     <div class="decorazione-fissa fiocco-r">🎀</div>
-    <div class="decorazione-fissa bot-left">🧸</div>
-    <div class="decorazione-fissa bot-right">🧸</div>
 
     <div class="dedica-personale" id="testoDedica"></div>
 
@@ -80,7 +77,6 @@
         <div class="slide"><img src="foto5.jpg" onerror="this.parentElement.style.display='none'"></div>
     </div>
 
-    <!-- STRUTTURA DEI DATI DI NASCITA -->
     <div class="contenitore-dati">
         <div class="blocco-dato">
             <div class="titolo-dato">Nascita</div>
@@ -100,7 +96,6 @@
         const stili = getComputedStyle(document.documentElement);
         document.getElementById('testoDedica').innerText = stili.getPropertyValue('--scritta-dedica').trim().replace(/"/g, "");
         
-        // Carica i dati sotto la foto
         document.getElementById('datoData').innerText = stili.getPropertyValue('--data-nascita').trim().replace(/"/g, "");
         document.getElementById('datoPeso').innerText = stili.getPropertyValue('--peso-nascita').trim().replace(/"/g, "");
         document.getElementById('datoAltezza').innerText = stili.getPropertyValue('--altezza-nascita').trim().replace(/"/g, "");
