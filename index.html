@@ -2,58 +2,60 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marilab 3D - Vinile Play</title>
+    <title>Marilab 3D - Prova Love NFC</title>
     <style>
-        body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow-x: hidden; }
+        /* SFONDO SCURO TEMA LOVE */
+        body { 
+            background-color: #0d0004; 
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow-x: hidden; position: relative; 
+        }
         
-        .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; margin-top: 20px; }
+        /* CUORICINI FLUTTUANTI SHINY */
+        .cuore { 
+            position: absolute; color: #ff3366; font-size: 14px; pointer-events: none; animation: fluttuaCuore linear infinite; z-index: 0; opacity: 0; 
+            filter: drop-shadow(0 0 4px rgba(255,51,102,0.6));
+        }
+        @keyframes fluttuaCuore {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* STRUTTURA CAROSELLO */
+        .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; z-index: 1; margin-top: 30px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
-        .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); object-fit: contain; }
-
-        /* AREA DEL DISCO */
-        .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
+        .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); object-fit: contain; }
         
+        /* AREA DISCO VINILE */
+        .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
         .vinile { 
             width: 140px; height: 140px; 
             background: radial-gradient(circle, #2c2c2c 2px, #000 4px, #111 20%, #000 40%, #111 60%, #000 80%, #111 100%);
-            border-radius: 50%; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; position: relative; border: 2px solid #222;
+            border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 2px solid #222;
         }
-
-        /* L'ETICHETTA CON IL SIMBOLO DEL PLAY INTERNO */
         .etichetta {
-            width: 50px; height: 50px;
-            background-color: #1DB954; /* Colore Verde Spotify */
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 22px; font-weight: bold;
-            border: 2px solid #000;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-            user-select: none;
-            padding-left: 4px; /* Centra visivamente il triangolo */
-            box-sizing: border-box;
+            width: 50px; height: 50px; background-color: #1DB954; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: bold;
+            border: 2px solid #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); user-select: none; padding-left: 4px; box-sizing: border-box;
         }
-
-        /* ANIMAZIONE DEL DISCO ESTERNO */
         .in-rotazione { animation: giraVinile 3s linear infinite; }
         @keyframes giraVinile { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .istruzione { color: #888; font-size: 12px; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <!-- CAROSELLO FOTO AUTOMATICO -->
+    <!-- LE FOTO DEL TUO BAMBINO -->
     <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL VINILE CON IL SIMBOLO DEL PLAY -->
+    <!-- IL VINILE CON IL TASTO PLAY -->
     <div class="player-container">
         <div class="vinile" id="discoVinile" onclick="controllaMusica()">
             <div class="etichetta" id="tastoIcona">▶</div>
@@ -61,7 +63,7 @@
         <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER FARE PLAY</div>
     </div>
 
-    <!-- FILE AUDIO AUDIO MP3 -->
+    <!-- AUDIO MP3 COLLEGATO ALLA TUA MUSICA -->
     <audio id="mioAudio" preload="auto" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
@@ -70,43 +72,46 @@
         // Gestione Carosello Foto ogni 5 secondi
         const slider = document.getElementById('slider');
         let index = 0;
-        if(slider && slider.children.length > 0) {
-            setInterval(() => {
+        setInterval(() => {
+            if(slider) {
                 index = (index + 1) % slider.children.length;
                 slider.scrollTo({ left: slider.clientWidth * index, behavior: 'smooth' });
-            }, 5000);
-        }
+            }
+        }, 5000);
 
-        // Funzione di controllo del vinile
+        // Controllo Vinile e Riproduzione Audio
         function controllaMusica() {
             const audio = document.getElementById('mioAudio');
             const disco = document.getElementById('discoVinile');
             const icona = document.getElementById('tastoIcona');
             const testo = document.getElementById('testoStato');
-
-            if (!audio || !disco || !icona || !testo) return;
-
             if (audio.paused) {
                 audio.play().then(() => {
                     disco.classList.add('in-rotazione');
-                    icona.innerText = "❚❚"; /* Cambia in Pausa */
-                    icona.style.paddingLeft = "0px";
-                    icona.style.fontSize = "16px";
-                    icona.style.backgroundColor = "#ff0055"; /* Diventa Rosa quando gira */
+                    icona.innerText = "❚❚"; icona.style.paddingLeft = "0px"; icona.style.fontSize = "16px";
+                    icona.style.backgroundColor = "#ff0055";
                     testo.innerText = "💿 IN RIPRODUZIONE...";
-                }).catch((err) => {
-                    console.log("Blocco:", err);
                 });
             } else {
                 audio.pause();
                 disco.classList.remove('in-rotazione');
-                icona.innerText = "▶"; /* Torna Play */
-                icona.style.paddingLeft = "4px";
-                icona.style.fontSize = "22px";
-                icona.style.backgroundColor = "#1DB954"; /* Torna Verde */
+                icona.innerText = "▶"; icona.style.paddingLeft = "4px"; icona.style.fontSize = "22px";
+                icona.style.backgroundColor = "#1DB954";
                 testo.innerText = "🎵 DISCO IN PAUSA";
             }
         }
+
+        // Generatore automatico della Cascata di Cuoricini
+        setInterval(() => {
+            const cuore = document.createElement('div');
+            cuore.className = 'cuore';
+            cuore.innerText = '♥';
+            cuore.style.left = Math.random() * 100 + 'vw';
+            cuore.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            cuore.style.fontSize = (Math.random() * 8 + 12) + 'px';
+            document.body.appendChild(cuore);
+            setTimeout(() => { cuore.remove(); }, 8000);
+        }, 400);
     </script>
 
 </body>
