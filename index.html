@@ -12,9 +12,9 @@
             --scritta-dedica: "Buon Compleanno Liam!";  /* 👈 SCRIVI QUI IL MESSAGGIO DI AUGURI */
             --nome-file-musica: "musica.mp3";            /* 👈 NOME DELLA CANZONCINA FESTOSA CARICATA */
             
-            --colore-sfondo: #1a1025;         /* Sfondo viola scuro notte magica (risalta i palloncini) */
+            --colore-sfondo: #b3e5fc;         /* Bellissimo Sfondo Celeste Cielo Pastello */
             --colore-etichetta: #1DB954;      /* Bollino Play (Verde Spotify) */
-            --colore-dedica: #00f0ff;         /* Colore Azzurro Neon per la scritta degli auguri */
+            --colore-dedica: #0288d1;         /* Colore Blu scuro per la scritta degli auguri */
         }
     </style>
     <!-- ========================================== -->
@@ -27,13 +27,12 @@
             margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow-x: hidden; position: relative; 
         }
         .dedica-personale {
-            font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; color: var(--colore-dedica); font-size: 24px; text-align: center; margin-top: 25px; margin-bottom: 5px; z-index: 1; text-shadow: 0 0 10px rgba(0,240,255,0.4);
+            font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold; color: var(--colore-dedica); font-size: 24px; text-align: center; margin-top: 25px; margin-bottom: 5px; z-index: 1; text-shadow: 0 1px 3px rgba(255,255,255,0.6);
         }
         
         /* EFFETTO PALLONCINI FLUTTUANTI */
         .palloncino { 
-            position: absolute; font-size: 30px; pointer-events: none; animation: volaPalloncino linear infinite; z-index: 0; opacity: 0;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            position: absolute; font-size: 32px; pointer-events: none; animation: volaPalloncino linear infinite; z-index: 0; opacity: 0;
         }
         @keyframes volaPalloncino {
             0% { transform: translateY(100vh) scale(0.6) rotate(0deg); opacity: 0; }
@@ -45,13 +44,13 @@
         .carosello { width: 100%; max-width: 500px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; z-index: 1; margin-top: 20px; }
         .carosello::-webkit-scrollbar { display: none; }
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
-        .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); object-fit: contain; }
+        .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); object-fit: contain; }
         
         .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; z-index: 1; }
         .vinile { 
             width: 140px; height: 140px; 
             background: radial-gradient(circle, #2c2c2c 2px, #000 4px, #111 20%, #000 40%, #111 60%, #000 80%, #111 100%);
-            border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
+            border-radius: 50%; box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.2);
             display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; border: 2px solid #222;
         }
         .etichetta {
@@ -61,7 +60,7 @@
         }
         .in-rotazione { animation: giraVinile 3s linear infinite; }
         @keyframes giraVinile { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .istruzione { color: #888; font-size: 11px; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
+        .istruzione { color: #555; font-size: 11px; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -127,18 +126,15 @@
             }
         }
 
-        // Generatore automatico di Palloncini Colorati 3D
+        // Generatore automatico di Palloncini Colorati
         setInterval(() => {
             const palloncino = document.createElement('div');
             palloncino.className = 'palloncino';
+            palloncino.innerText = '🎈';
             
-            // Emoji palloncini
-            const colori = ['🎈']; 
-            palloncino.innerText = colori[0];
-            
-            // Genera colori casuali sfruttando i filtri grafici per cambiare colore al palloncino rosso base!
-            const tonalita Casual = Math.floor(Math.random() * 360);
-            palloncino.style.filter = `hue-rotate(${tonalitaCasual}deg) drop-shadow(0 4px 6px rgba(0,0,0,0.3))`;
+            // Filtro per cambiare colore in modo casuale ad ogni palloncino
+            const tonalita = Math.floor(Math.random() * 360);
+            palloncino.style.filter = `hue-rotate(${tonalita}deg) drop-shadow(0 4px 6px rgba(0,0,0,0.2))`;
             
             palloncino.style.left = Math.random() * 100 + 'vw';
             palloncino.style.animationDuration = (Math.random() * 4 + 4) + 's';
