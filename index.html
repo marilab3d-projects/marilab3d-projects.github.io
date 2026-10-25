@@ -11,7 +11,7 @@
         .slide { flex: 0 0 100%; scroll-snap-align: center; display: flex; justify-content: center; padding: 10px; box-sizing: border-box; }
         .slide img { max-width: 95%; max-height: 50vh; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); object-fit: contain; }
 
-        /* IL DESIGN DEL VINILE */
+        /* AREA DEL DISCO */
         .player-container { margin-top: auto; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; }
         
         .vinile { 
@@ -20,29 +20,22 @@
             border-radius: 50%; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; position: relative;
-            border: 2px solid #222;
-            transition: transform 0.5s ease;
+            position: relative; border: 2px solid #222;
         }
 
-        /* L'ETICHETTA AL CENTRO DEL DISCO */
-        .etichetta {
+        /* IL VERO BOTTONE DI ASCOLTO AL CENTRO */
+        .bottone-play {
             width: 50px; height: 50px;
-            background-color: #1DB954; /* Parte già verde Spotify */
+            background-color: #1DB954;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 20px; font-weight: bold; text-align: center;
             border: 2px solid #000;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-            user-select: none;
-        }
-        
-        /* IL FORO CENTRALE INVISIBILE DIETRO AL PLAY */
-        .etichetta-foro {
-            position: absolute; width: 6px; height: 6px; background-color: #121212; border-radius: 50%; display: none;
+            color: white; font-weight: bold; font-size: 12px;
+            cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* ANIMAZIONE DI ROTAZIONE FLUIDA */
+        /* ANIMAZIONE DEL DISCO ESTERNO */
         .in-rotazione { animation: giraVinile 3s linear infinite; }
         @keyframes giraVinile { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -51,23 +44,22 @@
 </head>
 <body>
 
-    <!-- CAROSELLO FOTO AUTOMATICO (5 SECONDI) -->
+    <!-- CAROSELLO FOTO AUTOMATICO -->
     <div class="carosello" id="slider">
         <div class="slide"><img src="20250812_095704.jpg"></div>
         <div class="slide"><img src="20250823_185408.jpg"></div>
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL VINILE INTERATTIVO CON IL SIMBOLO PLAY/PAUSA -->
+    <!-- IL VINILE INTERATTIVO CON IL BOTTONE REALE -->
     <div class="player-container">
-        <div class="vinile" id="discoVinile" onclick="controllaMusica()">
-            <div class="etichetta" id="coloreEtichetta">▶</div>
-            <div class="etichetta-foro"></div>
+        <div class="vinile" id="discoVinile">
+            <button class="bottone-play" id="tastoAzione" onclick="controllaMusica()">PLAY</button>
         </div>
-        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER ASCOLTARE</div>
+        <div class="istruzione" id="testoStato">🎵 PREMI PER ASCOLTARE</div>
     </div>
 
-    <!-- LETTORE MP3 STANDARD MA NASCOSTO -->
+    <!-- FILE AUDIO AUDIO MP3 -->
     <audio id="mioAudio" preload="auto" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
@@ -83,32 +75,30 @@
             }, 5000);
         }
 
-        // Funzione per attivare e fermare il Vinile e cambiare l'icona
+        // Funzione di controllo sicura al 100%
         function controllaMusica() {
             const audio = document.getElementById('mioAudio');
             const disco = document.getElementById('discoVinile');
+            const tasto = document.getElementById('tastoAzione');
             const testo = document.getElementById('testoStato');
-            const etichetta = document.getElementById('coloreEtichetta');
 
-            if (!audio || !disco || !testo || !etichetta) return;
+            if (!audio || !disco || !tasto || !testo) return;
 
             if (audio.paused) {
                 audio.play().then(() => {
                     disco.classList.add('in-rotazione');
+                    tasto.innerText = "PAUSA";
+                    tasto.style.backgroundColor = "#ff0055"; // Cambia colore in riproduzione
                     testo.innerText = "💿 IN RIPRODUZIONE...";
-                    // Cambia l'icona da Play a Pausa (due barrette ||)
-                    etichetta.innerText = "❚❚"; 
-                    etichetta.style.fontSize = "14px";
                 }).catch((err) => {
-                    console.log("Errore riproduzione:", err);
+                    console.log("Blocco:", err);
                 });
             } else {
                 audio.pause();
                 disco.classList.remove('in-rotazione');
+                tasto.innerText = "PLAY";
+                tasto.style.backgroundColor = "#1DB954"; // Ritorna verde
                 testo.innerText = "🎵 DISCO IN PAUSA";
-                // Ritorna il simbolo del Play quando è fermo
-                etichetta.innerText = "▶"; 
-                etichetta.style.fontSize = "20px";
             }
         }
     </script>
