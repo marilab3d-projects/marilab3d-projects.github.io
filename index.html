@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marilab 3D - Vinile</title>
+    <title>Marilab 3D - Vinile Play</title>
     <style>
         body { background-color: #121212; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; font-family: Arial, sans-serif; overflow-x: hidden; }
         
@@ -20,19 +20,21 @@
             border-radius: 50%; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px rgba(255,255,255,0.2);
             display: flex; align-items: center; justify-content: center;
-            position: relative; border: 2px solid #222;
+            cursor: pointer; position: relative; border: 2px solid #222;
         }
 
-        /* IL VERO BOTTONE DI ASCOLTO AL CENTRO */
-        .bottone-play {
+        /* L'ETICHETTA CON IL SIMBOLO DEL PLAY INTERNO */
+        .etichetta {
             width: 50px; height: 50px;
-            background-color: #1DB954;
+            background-color: #1DB954; /* Colore Verde Spotify */
             border-radius: 50%;
-            border: 2px solid #000;
-            color: white; font-weight: bold; font-size: 12px;
-            cursor: pointer; z-index: 10;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            color: white; font-size: 22px; font-weight: bold;
+            border: 2px solid #000;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            user-select: none;
+            padding-left: 4px; /* Centra visivamente il triangolo */
+            box-sizing: border-box;
         }
 
         /* ANIMAZIONE DEL DISCO ESTERNO */
@@ -51,12 +53,12 @@
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL VINILE INTERATTIVO CON IL BOTTONE REALE -->
+    <!-- IL VINILE CON IL SIMBOLO DEL PLAY -->
     <div class="player-container">
-        <div class="vinile" id="discoVinile">
-            <button class="bottone-play" id="tastoAzione" onclick="controllaMusica()">PLAY</button>
+        <div class="vinile" id="discoVinile" onclick="controllaMusica()">
+            <div class="etichetta" id="tastoIcona">▶</div>
         </div>
-        <div class="istruzione" id="testoStato">🎵 PREMI PER ASCOLTARE</div>
+        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER FARE PLAY</div>
     </div>
 
     <!-- FILE AUDIO AUDIO MP3 -->
@@ -65,7 +67,7 @@
     </audio>
 
     <script>
-        // Gestione Carosello Foto
+        // Gestione Carosello Foto ogni 5 secondi
         const slider = document.getElementById('slider');
         let index = 0;
         if(slider && slider.children.length > 0) {
@@ -75,20 +77,22 @@
             }, 5000);
         }
 
-        // Funzione di controllo sicura al 100%
+        // Funzione di controllo del vinile
         function controllaMusica() {
             const audio = document.getElementById('mioAudio');
             const disco = document.getElementById('discoVinile');
-            const tasto = document.getElementById('tastoAzione');
+            const icona = document.getElementById('tastoIcona');
             const testo = document.getElementById('testoStato');
 
-            if (!audio || !disco || !tasto || !testo) return;
+            if (!audio || !disco || !icona || !testo) return;
 
             if (audio.paused) {
                 audio.play().then(() => {
                     disco.classList.add('in-rotazione');
-                    tasto.innerText = "PAUSA";
-                    tasto.style.backgroundColor = "#ff0055"; // Cambia colore in riproduzione
+                    icona.innerText = "❚❚"; /* Cambia in Pausa */
+                    icona.style.paddingLeft = "0px";
+                    icona.style.fontSize = "16px";
+                    icona.style.backgroundColor = "#ff0055"; /* Diventa Rosa quando gira */
                     testo.innerText = "💿 IN RIPRODUZIONE...";
                 }).catch((err) => {
                     console.log("Blocco:", err);
@@ -96,8 +100,10 @@
             } else {
                 audio.pause();
                 disco.classList.remove('in-rotazione');
-                tasto.innerText = "PLAY";
-                tasto.style.backgroundColor = "#1DB954"; // Ritorna verde
+                icona.innerText = "▶"; /* Torna Play */
+                icona.style.paddingLeft = "4px";
+                icona.style.fontSize = "22px";
+                icona.style.backgroundColor = "#1DB954"; /* Torna Verde */
                 testo.innerText = "🎵 DISCO IN PAUSA";
             }
         }
