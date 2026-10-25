@@ -28,18 +28,19 @@
         /* L'ETICHETTA AL CENTRO DEL DISCO */
         .etichetta {
             width: 50px; height: 50px;
-            background-color: #ff0055;
+            background-color: #1DB954; /* Parte già verde Spotify */
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 8px; font-weight: bold; text-align: center;
+            color: white; font-size: 20px; font-weight: bold; text-align: center;
             border: 2px solid #000;
             box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
             user-select: none;
         }
         
-        /* IL FORO CENTRALE */
-        .etichetta::after {
-            content: ''; position: absolute; width: 8px; height: 8px; background-color: #121212; border-radius: 50%; }
+        /* IL FORO CENTRALE INVISIBILE DIETRO AL PLAY */
+        .etichetta-foro {
+            position: absolute; width: 6px; height: 6px; background-color: #121212; border-radius: 50%; display: none;
+        }
 
         /* ANIMAZIONE DI ROTAZIONE FLUIDA */
         .in-rotazione { animation: giraVinile 3s linear infinite; }
@@ -57,12 +58,13 @@
         <div class="slide"><img src="20250915_081300.jpg"></div>
     </div>
 
-    <!-- IL VINILE INTERATTIVO -->
+    <!-- IL VINILE INTERATTIVO CON IL SIMBOLO PLAY/PAUSA -->
     <div class="player-container">
         <div class="vinile" id="discoVinile" onclick="controllaMusica()">
-            <div class="etichetta" id="coloreEtichetta">MARILAB</div>
+            <div class="etichetta" id="coloreEtichetta">▶</div>
+            <div class="etichetta-foro"></div>
         </div>
-        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER FARE PLAY</div>
+        <div class="istruzione" id="testoStato">🎵 TOCCA IL DISCO PER ASCOLTARE</div>
     </div>
 
     <!-- LETTORE MP3 STANDARD MA NASCOSTO -->
@@ -81,7 +83,7 @@
             }, 5000);
         }
 
-        // Funzione super blindata per attivare e fermare il Vinile e l'Audio
+        // Funzione per attivare e fermare il Vinile e cambiare l'icona
         function controllaMusica() {
             const audio = document.getElementById('mioAudio');
             const disco = document.getElementById('discoVinile');
@@ -94,7 +96,9 @@
                 audio.play().then(() => {
                     disco.classList.add('in-rotazione');
                     testo.innerText = "💿 IN RIPRODUZIONE...";
-                    etichetta.style.backgroundColor = "#1DB954"; // Diventa Verde Spotify
+                    // Cambia l'icona da Play a Pausa (due barrette ||)
+                    etichetta.innerText = "❚❚"; 
+                    etichetta.style.fontSize = "14px";
                 }).catch((err) => {
                     console.log("Errore riproduzione:", err);
                 });
@@ -102,7 +106,9 @@
                 audio.pause();
                 disco.classList.remove('in-rotazione');
                 testo.innerText = "🎵 DISCO IN PAUSA";
-                etichetta.style.backgroundColor = "#ff0055"; // Torna Rosso/Rosa
+                // Ritorna il simbolo del Play quando è fermo
+                etichetta.innerText = "▶"; 
+                etichetta.style.fontSize = "20px";
             }
         }
     </script>
